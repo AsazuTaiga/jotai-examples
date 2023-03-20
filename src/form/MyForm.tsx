@@ -15,7 +15,6 @@ import {
   useName,
   useEmail,
   usePassword,
-  useHasError,
   useCreateUserVariables,
   useFormMode,
   useResetForm,

@@ -116,7 +116,6 @@ const hasErrorAtom = atom((get) => {
   const passwordError = get(passwordErrorAtom);
   return nameError || emailError || passwordError;
 });
-export const useHasError = () => useAtomValue(hasErrorAtom);
 
 type FormMode = "input" | "confirmation";
 const formModeAtom = atom<FormMode, [FormMode], void>(

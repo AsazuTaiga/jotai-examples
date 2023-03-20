@@ -69,43 +69,47 @@ const PasswordInput = () => {
 };
 
 const ConfirmationView = () => {
-  const confirmation = useConfirmation();
-  const { name, email, password } = confirmation;
-
-  const [, setMode] = useFormMode();
-
-  const variables = useCreateUserVariables();
-  const [createUser] = useCreateUserMutation({
-    variables,
-  });
-
+  const { name, email, password } = useConfirmation();
   return (
     <Stack gap={2}>
       <Box sx={{ fontWeight: "bold" }}>Name: {name}</Box>
       <Box sx={{ fontWeight: "bold" }}>Email: {email}</Box>
       <Box sx={{ fontWeight: "bold" }}>Password: {password}</Box>
       <Stack direction="row" gap={2}>
-        <Button onClick={() => setMode("input")}>Back</Button>
-        <Button
-          variant="contained"
-          type="submit"
-          onClick={(e) => {
-            e.preventDefault();
-            // createUser();
-            window.alert("submit!" + JSON.stringify(variables));
-          }}
-        >
-          Submit
-        </Button>
+        <BackButton />
+        <SubmitButton />
       </Stack>
     </Stack>
   );
 };
 
-const InputView = () => {
-  const hasError = useHasError();
+const BackButton = () => {
   const [, setMode] = useFormMode();
-  const resetForm = useResetForm();
+  return <Button onClick={() => setMode("input")}>Back</Button>;
+};
+
+const SubmitButton = () => {
+  // 使う側はこんなにシンプル！（いっそこれらをまとめたhookを作ってしまうのもよいが、ややオーバーか？）
+  const variables = useCreateUserVariables();
+  const [createUser] = useCreateUserMutation({
+    variables,
+  });
+
+  return (
+    <Button
+      variant="contained"
+      onClick={(e) => {
+        // createUser();
+        window.alert("submit!" + JSON.stringify(variables));
+      }}
+    >
+      Submit
+    </Button>
+  );
+};
+
+const InputView = () => {
+  const [, setMode] = useFormMode();
 
   return (
     <Stack gap={2} component="form" onSubmit={(e) => e.preventDefault()}>
@@ -113,17 +117,31 @@ const InputView = () => {
       <EmailInput />
       <PasswordInput />
       <Stack direction="row" gap={2}>
-        <Button onClick={resetForm}>Reset</Button>
-
-        <Button
-          variant="contained"
-          type="submit"
-          onClick={() => setMode("confirmation")}
-        >
-          Next
-        </Button>
+        <ResetButton />
+        <NextButton />
       </Stack>
     </Stack>
+  );
+};
+
+const ResetButton = () => {
+  const resetForm = useResetForm();
+  return <Button onClick={resetForm}>Reset</Button>;
+};
+
+const NextButton = () => {
+  const [, setMode] = useFormMode();
+  return (
+    <Button
+      variant="contained"
+      type="submit"
+      onClick={(e) => {
+        e.preventDefault();
+        setMode("confirmation");
+      }}
+    >
+      Next
+    </Button>
   );
 };
 

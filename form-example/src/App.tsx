@@ -1,32 +1,16 @@
-import { atom, useAtom } from 'jotai';
-import React from 'react';
+import { MyForm } from "./form/MyForm";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-const firstNameAtom = atom('');
-const lastNameAtom = atom('');
+const client = new ApolloClient({
+  uri: "http://localhost:4000/graphql",
+  cache: new InMemoryCache(),
+});
 
 function App() {
-  const [firstName, setFirstName] = useAtom(firstNameAtom);
-  const [lastName, setLastName] = useAtom(lastNameAtom);
-
-  function handleFirstNameChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setFirstName(event.target.value);
-  }
-
-  function handleLastNameChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setLastName(event.target.value);
-  }
-
   return (
-    <div>
-      <div>
-        <label htmlFor="firstName">First Name:</label>
-        <input id="firstName" type="text" value={firstName} onChange={handleFirstNameChange} />
-      </div>
-      <div>
-        <label htmlFor="lastName">Last Name:</label>
-        <input id="lastName" type="text" value={lastName} onChange={handleLastNameChange} />
-      </div>
-    </div>
+    <ApolloProvider client={client}>
+      <MyForm />
+    </ApolloProvider>
   );
 }
 

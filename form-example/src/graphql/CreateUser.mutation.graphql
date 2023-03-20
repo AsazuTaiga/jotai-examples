@@ -1,0 +1,11 @@
+mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    ...User
+  }
+}
+
+fragment User on User {
+  id
+  name
+  email
+}

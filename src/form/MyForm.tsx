@@ -108,8 +108,6 @@ const SubmitButton = () => {
 };
 
 const InputView = () => {
-  const [, setMode] = useFormMode();
-
   return (
     <Stack gap={2} component="form" onSubmit={(e) => e.preventDefault()}>
       <NameInput />

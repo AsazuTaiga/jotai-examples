@@ -19,6 +19,7 @@ import {
   useCreateUserVariables,
   useFormMode,
   useResetForm,
+  useConfirmation,
 } from "./store";
 
 const NameInput = () => {
@@ -68,9 +69,12 @@ const PasswordInput = () => {
 };
 
 const ConfirmationView = () => {
-  const variables = useCreateUserVariables();
-  const { name, email, password } = variables.input;
+  const confirmation = useConfirmation();
+  const { name, email, password } = confirmation;
+
   const [, setMode] = useFormMode();
+
+  const variables = useCreateUserVariables();
   const [createUser] = useCreateUserMutation({
     variables,
   });

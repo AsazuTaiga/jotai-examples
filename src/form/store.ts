@@ -2,7 +2,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { z } from "zod";
 import { CreateUserMutationVariables } from "../graphql/generated";
 
-// エラーメッセージを表示するかどうかを判定するためのatom
+// エラーメッセージを表示するかどうかを判定するためのatom（フォーム全体で共有）
 const shouldShowErrorMessageAtom = atom(false);
 
 const nameAtom = atom("");
@@ -95,6 +95,19 @@ const createUserVariablesAtom = atom<CreateUserMutationVariables>((get) => ({
 }));
 export const useCreateUserVariables = () =>
   useAtomValue(createUserVariablesAtom);
+
+// 確認画面表示用にデータを整形したり
+const confirmationAtom = atom((get) => {
+  const name = get(nameAtom);
+  const email = get(emailAtom);
+  const password = get(passwordAtom);
+  return {
+    name,
+    email,
+    password: "*".repeat(password.length), // パスワードは表示しない
+  };
+});
+export const useConfirmation = () => useAtomValue(confirmationAtom);
 
 // フォーム全体をまたいで、エラーがあるかかないかを判定するためのatom
 const hasErrorAtom = atom((get) => {
